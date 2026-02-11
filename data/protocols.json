@@ -4,7 +4,7 @@
     "title": "Segfault Protocol",
     "category": "Debugging",
     "severity": "SEV-2",
-    "tags": ["c", "cpp", "memory", "crash"],
+    "tags": ["c", "cpp", "memory", "crash", "code"],
     "description": "Standard procedure for handling segmentation faults without panic.",
     "steps": [
       "Reproduce the crash in an isolated environment (minimal reproduction).",
@@ -23,14 +23,15 @@
     "title": "Math Comprehension Protocol",
     "category": "Learning",
     "severity": "SEV-3",
-    "tags": ["math", "learning", "anxiety", "calculus"],
-    "description": "For when a mathematical concept or equation makes no sense.",
+    "tags": ["math", "learning", "anxiety", "calculus", "theory"],
+    "description": "For when a mathematical concept or equation makes no sense and you feel stupid.",
     "steps": [
+      "STOP reading. Close eyes for 10 seconds. Reset panic.",
       "Write down the definition of every single variable and symbol in the equation.",
       "Check the units/dimensions of each term. Do they match?",
       "Substitute trivial numbers (0, 1, -1, infinity) to see behavior.",
       "Draw the function or concept visually (graph, diagram).",
-      "Find a concrete example or application of this concept.",
+      "Find a concrete example or application of this concept (Why do we need this?).",
       "Explain the concept out loud to a rubber duck/imaginary novice.",
       "If still stuck, trace back one level of abstraction (e.g., if derivative is unclear, review slope)."
     ],
@@ -41,12 +42,12 @@
     "title": "Friday Deploy Protocol",
     "category": "Operations",
     "severity": "SEV-1",
-    "tags": ["deployment", "production", "risk"],
+    "tags": ["deployment", "production", "risk", "server"],
     "description": "Safety checks before deploying code to production, especially on bad days.",
     "steps": [
       "Check the calendar: Is it Friday afternoon? If yes, ABORT unless critical fix.",
       "Verify all CI/CD pipelines are green.",
-      "Review the diff one last time. focus on config changes.",
+      "Review the diff one last time. Focus on config changes.",
       "Verify that a rollback plan is documented and tested.",
       "Check monitoring dashboards for current system health baselines.",
       "Announce the deployment in the relevant communication channel.",
@@ -54,5 +55,41 @@
       "Monitor error rates and latency for 15 minutes post-deploy."
     ],
     "exit_condition": "System is stable 30 mins after deploy, or rollback is completed."
+  },
+  {
+    "id": "motivation-loss-001",
+    "title": "Motivation Reboot Protocol",
+    "category": "Psychology",
+    "severity": "SEV-2",
+    "tags": ["motivation", "tired", "burnout", "starting"],
+    "description": "When you cannot bring yourself to read or code.",
+    "steps": [
+      "Acknowledge the feeling. Do not fight it. You are not 'lazy', you are low on dopamine.",
+      "Set a timer for exactly 5 minutes.",
+      "Commit to doing only ONE trivial task (e.g., open the IDE, read one paragraph).",
+      "Say out loud: 'I do not have to finish this. I only have to start.'",
+      "Remove one sensory distraction (close tab, put on noise-canceling headphones).",
+      "If after 5 minutes you still hate it, you are allowed to stop.",
+      "Usually, the 'activation energy' is the problem, not the task itself."
+    ],
+    "exit_condition": "You have engaged with the task for at least 5 minutes."
+  },
+  {
+    "id": "learning-reinforcement-001",
+    "title": "Skeleton Reinforcement Protocol",
+    "category": "Learning",
+    "severity": "SEV-3",
+    "tags": ["memory", "review", "studying", "forgetting"],
+    "description": "For filling the gaps in your knowledge skeleton.",
+    "steps": [
+      "Identify the specific 'gap' or concept you forgot.",
+      "Do NOT re-read the whole textbook chapter.",
+      "Search for the specific definition or code snippet.",
+      "Write it down physically (pen and paper) - this boosts retention.",
+      "Create a 'mini-project' or code snippet that uses ONLY this concept.",
+      "Add this concept to Anki or a spaced repetition system immediately.",
+      "Connect it to something you already know well (metaphor)."
+    ],
+    "exit_condition": "You have used the concept in a new context."
   }
 ]

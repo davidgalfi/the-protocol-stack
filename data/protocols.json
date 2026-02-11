@@ -91,5 +91,64 @@
       "Connect it to something you already know well (metaphor)."
     ],
     "exit_condition": "You have used the concept in a new context."
+  },
+  {
+    "id": "polya-problem-solving-001",
+    "title": "Polya's Problem Solving Protocol",
+    "category": "Engineering",
+    "severity": "SEV-2",
+    "tags": ["problem solving", "math", "algorithm", "hard"],
+    "description": "Based on George Polya's 'How to Solve It'. For complex, undefined problems.",
+    "steps": [
+      "PHASE 1: Understand. Can you state the problem in your own words?",
+      "Draw a figure or diagram. Introduce suitable notation.",
+      "PHASE 2: Plan. Find the connection between data and unknown.",
+      "Have you seen this before? Or a slightly different form?",
+      "Solve a simpler/related problem first (e.g., remove one constraint).",
+      "PHASE 3: Execute. Carry out your plan step-by-step.",
+      "Check each step. Can you prove that it is correct?",
+      "PHASE 4: Look Back. Can you check the result?",
+      "Can you derive the result differently? Can you use the method for another problem?"
+    ],
+    "exit_condition": "The solution is verified and the method is understood for future use."
+  },
+  {
+    "id": "keshav-reading-001",
+    "title": "Keshav's 3-Pass Reading Protocol",
+    "category": "Research",
+    "severity": "SEV-3",
+    "tags": ["reading", "research", "paper", "academic"],
+    "description": "Standard method for efficiently reading scientific papers (S. Keshav).",
+    "steps": [
+      "PASS 1 (5-10 min): Read Title, Abstract, Introduction.",
+      "Read Section and Sub-section headings (ignore content).",
+      "Read Conclusions. Glance at References.",
+      "DECISION: Is this paper relevant? If NO, stop here.",
+      "PASS 2 (1 hour): Read the content, but ignore proofs/details.",
+      "Look carefully at figures, diagrams, and captions.",
+      "Mark unread references for further reading.",
+      "PASS 3 (Deep Dive): Virtually re-implement the paper.",
+      "Identify and challenge every assumption.",
+      "Think about how YOU would present this idea."
+    ],
+    "exit_condition": "You can summarize the paper's main idea and critique its weaknesses."
+  },
+  {
+    "id": "feynman-learning-001",
+    "title": "Feynman Deep Concept Protocol",
+    "category": "Learning",
+    "severity": "SEV-3",
+    "tags": ["learning", "concept", "theory", "physics"],
+    "description": "For truly understanding a concept, not just memorizing the name.",
+    "steps": [
+      "Choose the concept you want to understand.",
+      "Pretend you are teaching it to a 12-year-old student (or a rubber duck).",
+      "Use simple language. Avoid jargon and buzzwords.",
+      "Identify gaps in your explanation (where you get stuck or use complex words).",
+      "Go back to the source material to fill specifically those gaps.",
+      "Simplify and create analogies.",
+      "Repeat until the explanation is simple enough for a child."
+    ],
+    "exit_condition": "You can explain the concept simply without looking at any notes."
   }
 ]

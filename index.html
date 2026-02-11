@@ -345,7 +345,7 @@
       "DEFINE: State the contradiction. 'If I improve [Parameter A], then [Parameter B] gets worse.'",
       "IDEAL FINAL RESULT: Imagine the problem solves itself without cost. 'The system prevents X by itself.'",
       "SEGMENTATION: Can I divide the object into independent parts?",
-      "INVERSION: Can I do the opposite action? (Cool instead of heat? Move the part instead of the tool?)",
+      "INVERSION: Can I do the opposite action? (Cool instead of heat? Move the part instead of the tool?)\",",
       "SELF-SERVICE: Can the object perform the useful function on itself?",
       "FEEDBACK: Can I introduce feedback to adapt to the situation?",
       "PARAMETER CHANGES: Change the state (solid->liquid), density, or flexibility."
@@ -367,6 +367,73 @@
       "NEGATE: Do the opposite of the failure list."
     ],
     "exit_condition": "You have a robust plan based on avoiding known failure paths."
+  },
+  {
+    "id": "5-whys-root-cause-001",
+    "title": "The 5 Whys Root Cause",
+    "category": "Debugging",
+    "severity": "SEV-2",
+    "tags": ["debugging", "management", "root cause", "toyota", "lean"],
+    "description": "Based on Toyota Production System. Recursive interrogation to find the process failure, not the human failure.",
+    "steps": [
+      "DEFINE: State the specific problem clearly. (e.g., 'The server crashed').",
+      "ASK WHY 1: Why did it crash? -> 'Because it ran out of memory'.",
+      "ASK WHY 2: Why did it run out of memory? -> 'Because of a memory leak in the parser'.",
+      "ASK WHY 3: Why was there a leak? -> 'Because we didn't test with large inputs'.",
+      "ASK WHY 4: Why didn't we test? -> 'Because the test environment doesn't match production'.",
+      "ASK WHY 5: Why no match? -> 'Because infrastructure is manual'. (ROOT CAUSE: Lack of IaC).",
+      "FIX: Fix the root cause (Automate infra), not just the symptom (Restart server)."
+    ],
+    "exit_condition": "You have identified a systemic process flaw that can be fixed permanently."
+  },
+  {
+    "id": "ooda-loop-001",
+    "title": "OODA Loop (Boyd Cycle)",
+    "category": "Decision Making",
+    "severity": "SEV-1",
+    "tags": ["decision", "chaos", "military", "strategy", "speed"],
+    "description": "John Boyd's cybernetic loop for winning in chaotic environments. Speed > Perfection.",
+    "steps": [
+      "OBSERVE: Gather raw data from the environment. What is actually happening right now?",
+      "ORIENT: Filter data through your culture, genetics, and previous experience. Smash old models to create new ones.",
+      "DECIDE: Form a hypothesis. Choose the 'least worst' option quickly.",
+      "ACT: Execute the decision violently and decisively.",
+      "LOOP: Immediately go back to Observe. Did your action change the situation? Repeat faster than the opponent."
+    ],
+    "exit_condition": "You are acting faster than the problem serves new inputs."
+  },
+  {
+    "id": "amdahl-optimization-001",
+    "title": "Amdahl's Optimization Law",
+    "category": "Engineering",
+    "severity": "SEV-3",
+    "tags": ["performance", "optimization", "math", "computer science"],
+    "description": "Don't optimize blindly. Use Amdahl's Law to find the theoretical maximum speedup.",
+    "steps": [
+      "MEASURE: Profile the code. Find the part that is slow.",
+      "IDENTIFY P: What percentage of the execution time does this part take? (e.g., p = 0.6 or 60%).",
+      "CALCULATE: Even if you make that part infinitely fast, the max speedup is 1 / (1 - p). (e.g., 1 / 0.4 = 2.5x).",
+      "DECIDE: Is it worth the engineering effort for that maximum theoretical gain?",
+      "FOCUS: If 'p' is small, STOP optimization. Focus only on high 'p' components."
+    ],
+    "exit_condition": "You have mathematical proof that optimization is worth the effort (or not)."
+  },
+  {
+    "id": "galls-law-design-001",
+    "title": "Gall's Law System Design",
+    "category": "System Design",
+    "severity": "SEV-2",
+    "tags": ["architecture", "complexity", "design", "gall", "systems"],
+    "description": "'A complex system that works is invariably found to have evolved from a simple system that worked.'",
+    "steps": [
+      "RULE 1: Do NOT design a complex system from scratch. It will fail. (Gall's Law).",
+      "STEP 1: Build the 'Minimum Viable System' (MVS). The dumbest possible thing that runs end-to-end.",
+      "STEP 2: Verify that the simple system works perfectly.",
+      "STEP 3: Add ONE complex feature/module.",
+      "STEP 4: Verify again. If it breaks, remove the feature. Do not patch it.",
+      "REPEAT: Evolve the system incrementally. Complexity is grown, not built."
+    ],
+    "exit_condition": "You have a working complex system evolved from a working simple one."
   }
 ];
 

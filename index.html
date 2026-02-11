@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Protocol Stack</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #00ff41;
+            --secondary-text: #a0a0a0;
+            --border-color: #333;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 20px;
+        }
+        h1 { margin: 0; color: var(--accent-color); }
+        .subtitle { color: var(--secondary-text); font-size: 0.9em; }
+        
+        #search-box {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            margin-bottom: 30px;
+            font-family: inherit;
+        }
+        #search-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .protocol-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-color);
+        }
+        .protocol-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+        .protocol-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        .protocol-meta {
+            font-size: 0.8em;
+            color: var(--secondary-text);
+        }
+        .protocol-desc {
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .step-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .step-list li {
+            margin-bottom: 8px;
+            display: flex;
+        }
+        .step-list li::before {
+            content: ">";
+            color: var(--accent-color);
+            margin-right: 10px;
+        }
+        .exit-condition {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            font-size: 0.9em;
+            color: var(--secondary-text);
+        }
+        .tag {
+            display: inline-block;
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>THE PROTOCOL STACK</h1>
+            <p class="subtitle">Cognitive Checklists for Engineering & Learning</p>
+        </header>
+
+        <input type="text" id="search-box" placeholder="SEARCH PROTOCOLS (e.g., segfault, math, anxiety)...">
+
+        <div id="protocol-list">
+            <!-- Protocols will be injected here -->
+            <p style="text-align: center; color: #666;">Loading protocols...</p>
+        </div>
+    </div>
+
+    <script>
+        const protocolList = document.getElementById('protocol-list');
+        const searchBox = document.getElementById('search-box');
+        let protocols = [];
+
+        async function fetchProtocols() {
+            try {
+                const response = await fetch('data/protocols.json');
+                if (!response.ok) throw new Error('Failed to load data');
+                protocols = await response.json();
+                renderProtocols(protocols);
+            } catch (error) {
+                protocolList.innerHTML = `<p style="color: red;">Error: ${error.message}. Ensure data/protocols.json exists.</p>`;
+            }
+        }
+
+        function renderProtocols(data) {
+            protocolList.innerHTML = '';
+            if (data.length === 0) {
+                protocolList.innerHTML = '<p style="text-align: center;">No protocols found.</p>';
+                return;
+            }
+
+            data.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'protocol-card';
+                
+                const tagsHtml = p.tags.map(t => `<span class="tag">${t.toUpperCase()}</span>`).join('');
+                
+                const stepsHtml = p.steps.map(step => `<li>${step}</li>`).join('');
+
+                card.innerHTML = `
+                    <div class="protocol-header">
+                        <span class="protocol-title">${p.title.toUpperCase()}</span>
+                        <span class="protocol-meta">[${p.severity}] ${p.category}</span>
+                    </div>
+                    <div class="protocol-desc">${p.description}</div>
+                    <div style="margin-bottom: 10px;">${tagsHtml}</div>
+                    <ul class="step-list">
+                        ${stepsHtml}
+                    </ul>
+                    <div class="exit-condition">
+                        EXIT: ${p.exit_condition}
+                    </div>
+                `;
+                protocolList.appendChild(card);
+            });
+        }
+
+        searchBox.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = protocols.filter(p => 
+                p.title.toLowerCase().includes(query) || 
+                p.tags.some(t => t.toLowerCase().includes(query)) ||
+                p.category.toLowerCase().includes(query)
+            );
+            renderProtocols(filtered);
+        });
+
+        // Initialize
+        fetchProtocols();
+    </script>
+</body>
+</html>

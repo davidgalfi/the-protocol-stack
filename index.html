@@ -52,15 +52,20 @@
         .protocol-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border-left: 4px solid var(--accent-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .protocol-card:hover {
+            border-left-width: 8px;
+            background: #252525;
         }
         .protocol-header {
+            padding: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
+            align-items: center;
         }
         .protocol-title {
             font-size: 1.2em;
@@ -71,8 +76,23 @@
             font-size: 0.8em;
             color: var(--secondary-text);
         }
+        
+        /* Hidden content by default */
+        .protocol-body {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        /* When expanded, show content */
+        .protocol-card.expanded .protocol-body {
+            display: block;
+        }
+        .protocol-card.expanded {
+            margin-bottom: 20px; /* More space when open */
+        }
+
         .protocol-desc {
-            margin-bottom: 15px;
+            margin: 15px 0;
             font-style: italic;
         }
         .step-list {
@@ -103,6 +123,11 @@
             font-size: 0.7em;
             margin-right: 5px;
         }
+        .chevron {
+            color: var(--accent-color);
+            margin-left: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -121,7 +146,6 @@
 
     <script>
         // EMBEDDED PROTOCOLS DATA
-        // This bypasses the fetch() requirement and works completely offline/locally
         const PROTOCOLS_DATA = [
   {
     "id": "segfault-001",
@@ -290,22 +314,28 @@
             data.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'protocol-card';
+                // Initially collapsed state handled by missing 'expanded' class
                 
                 const tagsHtml = (p.tags || []).map(t => `<span class="tag">${t.toUpperCase()}</span>`).join('');
                 const stepsHtml = (p.steps || []).map(step => `<li>${step}</li>`).join('');
 
                 card.innerHTML = `
-                    <div class="protocol-header">
-                        <span class="protocol-title">${p.title.toUpperCase()}</span>
+                    <div class="protocol-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <div>
+                            <span class="protocol-title">${p.title.toUpperCase()}</span>
+                            <span class="chevron">▼</span>
+                        </div>
                         <span class="protocol-meta">[${p.severity}] ${p.category}</span>
                     </div>
-                    <div class="protocol-desc">${p.description}</div>
-                    <div style="margin-bottom: 10px;">${tagsHtml}</div>
-                    <ul class="step-list">
-                        ${stepsHtml}
-                    </ul>
-                    <div class="exit-condition">
-                        EXIT: ${p.exit_condition}
+                    <div class="protocol-body">
+                        <div class="protocol-desc">${p.description}</div>
+                        <div style="margin-bottom: 10px;">${tagsHtml}</div>
+                        <ul class="step-list">
+                            ${stepsHtml}
+                        </ul>
+                        <div class="exit-condition">
+                            EXIT: ${p.exit_condition}
+                        </div>
                     </div>
                 `;
                 protocolList.appendChild(card);

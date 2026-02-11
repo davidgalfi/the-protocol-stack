@@ -115,7 +115,6 @@
         <input type="text" id="search-box" placeholder="SEARCH PROTOCOLS (e.g., segfault, math, anxiety)...">
 
         <div id="protocol-list">
-            <!-- Protocols will be injected here -->
             <p style="text-align: center; color: #666;">Loading protocols...</p>
         </div>
     </div>
@@ -127,19 +126,38 @@
 
         async function fetchProtocols() {
             try {
-                const response = await fetch('data/protocols.json');
-                if (!response.ok) throw new Error('Failed to load data');
+                // Check if running locally
+                if (window.location.protocol === 'file:') {
+                    throw new Error('Cannot fetch JSON via file:// protocol. Please use a local server or GitHub Pages.');
+                }
+
+                const response = await fetch('./data/protocols.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
                 protocols = await response.json();
                 renderProtocols(protocols);
             } catch (error) {
-                protocolList.innerHTML = `<p style="color: red;">Error: ${error.message}. Ensure data/protocols.json exists.</p>`;
+                console.error(error);
+                protocolList.innerHTML = `
+                    <div style="border: 1px solid red; padding: 20px; color: #ff6b6b; text-align: center;">
+                        <h3>⚠️ Error Loading Protocols</h3>
+                        <p>${error.message}</p>
+                        <hr style="border-color: #ff6b6b; opacity: 0.3;">
+                        <p style="font-size: 0.9em; color: #ccc;">
+                            <strong>Possible Fixes:</strong><br>
+                            1. View this on <u>GitHub Pages</u> (https://[username].github.io/the-protocol-stack)<br>
+                            2. If running locally, use a local server (e.g., <code>python -m http.server</code>)<br>
+                            3. Ensure <code>data/protocols.json</code> exists in the repo.
+                        </p>
+                    </div>`;
             }
         }
 
         function renderProtocols(data) {
             protocolList.innerHTML = '';
             if (data.length === 0) {
-                protocolList.innerHTML = '<p style="text-align: center;">No protocols found.</p>';
+                protocolList.innerHTML = '<p style="text-align: center;">No protocols found matching criteria.</p>';
                 return;
             }
 
@@ -147,9 +165,8 @@
                 const card = document.createElement('div');
                 card.className = 'protocol-card';
                 
-                const tagsHtml = p.tags.map(t => `<span class="tag">${t.toUpperCase()}</span>`).join('');
-                
-                const stepsHtml = p.steps.map(step => `<li>${step}</li>`).join('');
+                const tagsHtml = (p.tags || []).map(t => `<span class="tag">${t.toUpperCase()}</span>`).join('');
+                const stepsHtml = (p.steps || []).map(step => `<li>${step}</li>`).join('');
 
                 card.innerHTML = `
                     <div class="protocol-header">
@@ -173,8 +190,8 @@
             const query = e.target.value.toLowerCase();
             const filtered = protocols.filter(p => 
                 p.title.toLowerCase().includes(query) || 
-                p.tags.some(t => t.toLowerCase().includes(query)) ||
-                p.category.toLowerCase().includes(query)
+                (p.tags && p.tags.some(t => t.toLowerCase().includes(query))) ||
+                (p.category && p.category.toLowerCase().includes(query))
             );
             renderProtocols(filtered);
         });

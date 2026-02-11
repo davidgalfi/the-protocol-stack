@@ -1,0 +1,58 @@
+[
+  {
+    "id": "segfault-001",
+    "title": "Segfault Protocol",
+    "category": "Debugging",
+    "severity": "SEV-2",
+    "tags": ["c", "cpp", "memory", "crash"],
+    "description": "Standard procedure for handling segmentation faults without panic.",
+    "steps": [
+      "Reproduce the crash in an isolated environment (minimal reproduction).",
+      "Compile with debug flags enabled (-g -O0 -fsanitize=address).",
+      "Run the program inside a debugger (gdb/lldb) or Valgrind.",
+      "Identify the exact line of the crash from the stack trace.",
+      "Check all pointers on that line: Is any of them NULL?",
+      "Check array bounds: Is the index within [0, size-1]?",
+      "Check object lifetime: Was the memory already freed?",
+      "If the crash is intermittent, check for race conditions or uninitialized variables."
+    ],
+    "exit_condition": "The crash is identified and a fix is verified in the isolated environment."
+  },
+  {
+    "id": "math-panic-001",
+    "title": "Math Comprehension Protocol",
+    "category": "Learning",
+    "severity": "SEV-3",
+    "tags": ["math", "learning", "anxiety", "calculus"],
+    "description": "For when a mathematical concept or equation makes no sense.",
+    "steps": [
+      "Write down the definition of every single variable and symbol in the equation.",
+      "Check the units/dimensions of each term. Do they match?",
+      "Substitute trivial numbers (0, 1, -1, infinity) to see behavior.",
+      "Draw the function or concept visually (graph, diagram).",
+      "Find a concrete example or application of this concept.",
+      "Explain the concept out loud to a rubber duck/imaginary novice.",
+      "If still stuck, trace back one level of abstraction (e.g., if derivative is unclear, review slope)."
+    ],
+    "exit_condition": "You can explain the equation's meaning in plain language without looking at notes."
+  },
+  {
+    "id": "deploy-fear-001",
+    "title": "Friday Deploy Protocol",
+    "category": "Operations",
+    "severity": "SEV-1",
+    "tags": ["deployment", "production", "risk"],
+    "description": "Safety checks before deploying code to production, especially on bad days.",
+    "steps": [
+      "Check the calendar: Is it Friday afternoon? If yes, ABORT unless critical fix.",
+      "Verify all CI/CD pipelines are green.",
+      "Review the diff one last time. focus on config changes.",
+      "Verify that a rollback plan is documented and tested.",
+      "Check monitoring dashboards for current system health baselines.",
+      "Announce the deployment in the relevant communication channel.",
+      "Deploy to a canary/staging subset first if possible.",
+      "Monitor error rates and latency for 15 minutes post-deploy."
+    ],
+    "exit_condition": "System is stable 30 mins after deploy, or rollback is completed."
+  }
+]

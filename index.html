@@ -298,6 +298,75 @@
       "Repeat until the explanation is simple enough for a child."
     ],
     "exit_condition": "You can explain the concept simply without looking at any notes."
+  },
+  {
+    "id": "cognitive-bias-linter-001",
+    "title": "Cognitive Bias Linter",
+    "category": "Decision Making",
+    "severity": "SEV-1",
+    "tags": ["psychology", "bias", "logic", "decision", "critical thinking"],
+    "description": "Debug your own brain before making a critical decision. Use this to catch 'System 1' errors.",
+    "steps": [
+      "SUNK COST CHECK: If I had invested ZERO time/money in this so far, would I still start it today? (If NO -> Abort).",
+      "CONFIRMATION BIAS CHECK: Spend 5 minutes explicitly searching for evidence that proves me WRONG.",
+      "FUNDAMENTAL ATTRIBUTION ERROR: Am I blaming a person's character for a situational problem?",
+      "SURVIVORSHIP BIAS: Am I only looking at the winners? What about the invisible failures?",
+      "OCCAM'S RAZOR: Is my explanation the simplest one, or am I inventing a conspiracy?",
+      "ANCHORING: Am I fixated on the first number/solution I heard?",
+      "EMOTIONAL STATE: Halt if hungry, angry, lonely, or tired (HALT)."
+    ],
+    "exit_condition": "You have identified at least one potential bias or confirmed rationality."
+  },
+  {
+    "id": "diffused-mode-reset-001",
+    "title": "Diffused Mode Reset",
+    "category": "Neuroscience",
+    "severity": "SEV-3",
+    "tags": ["brain", "focus", "stuck", "neuroscience", "creativity"],
+    "description": "Based on Oakley & Sejnowski. Force the brain to switch from TPN (Task Positive) to DMN (Default Mode) network.",
+    "steps": [
+      "CONDITION: Stuck on a problem for >15 minutes with zero progress.",
+      "EXECUTE HARD STOP: Close the laptop/book immediately.",
+      "SENSORY DEPRIVATION: No phone, no podcasts, no reading. Silence.",
+      "KINETIC ENGAGEMENT: Perform a rhythmic, mindless physical task (walking, dishes, juggling).",
+      "WAIT: Do not try to solve the problem. Let the DMN network scan for associations.",
+      "CAPTURE: When a solution 'pops up' (Theta state), write it down instantly."
+    ],
+    "exit_condition": "A new perspective or solution approach has appeared spontaneously."
+  },
+  {
+    "id": "triz-problem-solving-001",
+    "title": "TRIZ Contradiction Solver",
+    "category": "Engineering",
+    "severity": "SEV-2",
+    "tags": ["innovation", "triz", "engineering", "contradiction", "algorithm"],
+    "description": "Algorithmic creativity based on Altshuller's analysis of 40k patents. Solve contradictions without compromise.",
+    "steps": [
+      "DEFINE: State the contradiction. 'If I improve [Parameter A], then [Parameter B] gets worse.'",
+      "IDEAL FINAL RESULT: Imagine the problem solves itself without cost. 'The system prevents X by itself.'",
+      "SEGMENTATION: Can I divide the object into independent parts?",
+      "INVERSION: Can I do the opposite action? (Cool instead of heat? Move the part instead of the tool?)",
+      "SELF-SERVICE: Can the object perform the useful function on itself?",
+      "FEEDBACK: Can I introduce feedback to adapt to the situation?",
+      "PARAMETER CHANGES: Change the state (solid->liquid), density, or flexibility."
+    ],
+    "exit_condition": "You have found a solution that resolves the contradiction without compromise."
+  },
+  {
+    "id": "jacobi-inversion-001",
+    "title": "Jacobi Inversion Protocol",
+    "category": "Logic",
+    "severity": "SEV-2",
+    "tags": ["math", "inversion", "logic", "planning", "stoicism"],
+    "description": "'Invert, always invert.' (Carl Jacobi). Solve difficult problems backwards.",
+    "steps": [
+      "INVERT GOAL: Instead of 'How do I achieve X?', ask 'How do I guarantee X never happens?'",
+      "LIST FAILURE MODES: Write down exactly what would cause total failure.",
+      "AVOIDANCE PLAN: Create a plan to prevent each of those failure modes.",
+      "EXAMPLE: Don't ask 'How to write good code?'. Ask 'How to write unmaintainable code?' (No comments, global vars, huge functions).",
+      "NEGATE: Do the opposite of the failure list."
+    ],
+    "exit_condition": "You have a robust plan based on avoiding known failure paths."
   }
 ];
 

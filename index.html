@@ -120,39 +120,165 @@
     </div>
 
     <script>
+        // EMBEDDED PROTOCOLS DATA
+        // This bypasses the fetch() requirement and works completely offline/locally
+        const PROTOCOLS_DATA = [
+  {
+    "id": "segfault-001",
+    "title": "Segfault Protocol",
+    "category": "Debugging",
+    "severity": "SEV-2",
+    "tags": ["c", "cpp", "memory", "crash", "code"],
+    "description": "Standard procedure for handling segmentation faults without panic.",
+    "steps": [
+      "Reproduce the crash in an isolated environment (minimal reproduction).",
+      "Compile with debug flags enabled (-g -O0 -fsanitize=address).",
+      "Run the program inside a debugger (gdb/lldb) or Valgrind.",
+      "Identify the exact line of the crash from the stack trace.",
+      "Check all pointers on that line: Is any of them NULL?",
+      "Check array bounds: Is the index within [0, size-1]?",
+      "Check object lifetime: Was the memory already freed?",
+      "If the crash is intermittent, check for race conditions or uninitialized variables."
+    ],
+    "exit_condition": "The crash is identified and a fix is verified in the isolated environment."
+  },
+  {
+    "id": "math-panic-001",
+    "title": "Math Comprehension Protocol",
+    "category": "Learning",
+    "severity": "SEV-3",
+    "tags": ["math", "learning", "anxiety", "calculus", "theory"],
+    "description": "For when a mathematical concept or equation makes no sense and you feel stupid.",
+    "steps": [
+      "STOP reading. Close eyes for 10 seconds. Reset panic.",
+      "Write down the definition of every single variable and symbol in the equation.",
+      "Check the units/dimensions of each term. Do they match?",
+      "Substitute trivial numbers (0, 1, -1, infinity) to see behavior.",
+      "Draw the function or concept visually (graph, diagram).",
+      "Find a concrete example or application of this concept (Why do we need this?).",
+      "Explain the concept out loud to a rubber duck/imaginary novice.",
+      "If still stuck, trace back one level of abstraction (e.g., if derivative is unclear, review slope)."
+    ],
+    "exit_condition": "You can explain the equation's meaning in plain language without looking at notes."
+  },
+  {
+    "id": "deploy-fear-001",
+    "title": "Friday Deploy Protocol",
+    "category": "Operations",
+    "severity": "SEV-1",
+    "tags": ["deployment", "production", "risk", "server"],
+    "description": "Safety checks before deploying code to production, especially on bad days.",
+    "steps": [
+      "Check the calendar: Is it Friday afternoon? If yes, ABORT unless critical fix.",
+      "Verify all CI/CD pipelines are green.",
+      "Review the diff one last time. Focus on config changes.",
+      "Verify that a rollback plan is documented and tested.",
+      "Check monitoring dashboards for current system health baselines.",
+      "Announce the deployment in the relevant communication channel.",
+      "Deploy to a canary/staging subset first if possible.",
+      "Monitor error rates and latency for 15 minutes post-deploy."
+    ],
+    "exit_condition": "System is stable 30 mins after deploy, or rollback is completed."
+  },
+  {
+    "id": "motivation-loss-001",
+    "title": "Motivation Reboot Protocol",
+    "category": "Psychology",
+    "severity": "SEV-2",
+    "tags": ["motivation", "tired", "burnout", "starting"],
+    "description": "When you cannot bring yourself to read or code.",
+    "steps": [
+      "Acknowledge the feeling. Do not fight it. You are not 'lazy', you are low on dopamine.",
+      "Set a timer for exactly 5 minutes.",
+      "Commit to doing only ONE trivial task (e.g., open the IDE, read one paragraph).",
+      "Say out loud: 'I do not have to finish this. I only have to start.'",
+      "Remove one sensory distraction (close tab, put on noise-canceling headphones).",
+      "If after 5 minutes you still hate it, you are allowed to stop.",
+      "Usually, the 'activation energy' is the problem, not the task itself."
+    ],
+    "exit_condition": "You have engaged with the task for at least 5 minutes."
+  },
+  {
+    "id": "learning-reinforcement-001",
+    "title": "Skeleton Reinforcement Protocol",
+    "category": "Learning",
+    "severity": "SEV-3",
+    "tags": ["memory", "review", "studying", "forgetting"],
+    "description": "For filling the gaps in your knowledge skeleton.",
+    "steps": [
+      "Identify the specific 'gap' or concept you forgot.",
+      "Do NOT re-read the whole textbook chapter.",
+      "Search for the specific definition or code snippet.",
+      "Write it down physically (pen and paper) - this boosts retention.",
+      "Create a 'mini-project' or code snippet that uses ONLY this concept.",
+      "Add this concept to Anki or a spaced repetition system immediately.",
+      "Connect it to something you already know well (metaphor)."
+    ],
+    "exit_condition": "You have used the concept in a new context."
+  },
+  {
+    "id": "polya-problem-solving-001",
+    "title": "Polya's Problem Solving Protocol",
+    "category": "Engineering",
+    "severity": "SEV-2",
+    "tags": ["problem solving", "math", "algorithm", "hard"],
+    "description": "Based on George Polya's 'How to Solve It'. For complex, undefined problems.",
+    "steps": [
+      "PHASE 1: Understand. Can you state the problem in your own words?",
+      "Draw a figure or diagram. Introduce suitable notation.",
+      "PHASE 2: Plan. Find the connection between data and unknown.",
+      "Have you seen this before? Or a slightly different form?",
+      "Solve a simpler/related problem first (e.g., remove one constraint).",
+      "PHASE 3: Execute. Carry out your plan step-by-step.",
+      "Check each step. Can you prove that it is correct?",
+      "PHASE 4: Look Back. Can you check the result?",
+      "Can you derive the result differently? Can you use the method for another problem?"
+    ],
+    "exit_condition": "The solution is verified and the method is understood for future use."
+  },
+  {
+    "id": "keshav-reading-001",
+    "title": "Keshav's 3-Pass Reading Protocol",
+    "category": "Research",
+    "severity": "SEV-3",
+    "tags": ["reading", "research", "paper", "academic"],
+    "description": "Standard method for efficiently reading scientific papers (S. Keshav).",
+    "steps": [
+      "PASS 1 (5-10 min): Read Title, Abstract, Introduction.",
+      "Read Section and Sub-section headings (ignore content).",
+      "Read Conclusions. Glance at References.",
+      "DECISION: Is this paper relevant? If NO, stop here.",
+      "PASS 2 (1 hour): Read the content, but ignore proofs/details.",
+      "Look carefully at figures, diagrams, and captions.",
+      "Mark unread references for further reading.",
+      "PASS 3 (Deep Dive): Virtually re-implement the paper.",
+      "Identify and challenge every assumption.",
+      "Think about how YOU would present this idea."
+    ],
+    "exit_condition": "You can summarize the paper's main idea and critique its weaknesses."
+  },
+  {
+    "id": "feynman-learning-001",
+    "title": "Feynman Deep Concept Protocol",
+    "category": "Learning",
+    "severity": "SEV-3",
+    "tags": ["learning", "concept", "theory", "physics"],
+    "description": "For truly understanding a concept, not just memorizing the name.",
+    "steps": [
+      "Choose the concept you want to understand.",
+      "Pretend you are teaching it to a 12-year-old student (or a rubber duck).",
+      "Use simple language. Avoid jargon and buzzwords.",
+      "Identify gaps in your explanation (where you get stuck or use complex words).",
+      "Go back to the source material to fill specifically those gaps.",
+      "Simplify and create analogies.",
+      "Repeat until the explanation is simple enough for a child."
+    ],
+    "exit_condition": "You can explain the concept simply without looking at any notes."
+  }
+];
+
         const protocolList = document.getElementById('protocol-list');
         const searchBox = document.getElementById('search-box');
-        let protocols = [];
-
-        async function fetchProtocols() {
-            try {
-                // Check if running locally
-                if (window.location.protocol === 'file:') {
-                    throw new Error('Cannot fetch JSON via file:// protocol. Please use a local server or GitHub Pages.');
-                }
-
-                const response = await fetch('./data/protocols.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP Error: ${response.status}`);
-                }
-                protocols = await response.json();
-                renderProtocols(protocols);
-            } catch (error) {
-                console.error(error);
-                protocolList.innerHTML = `
-                    <div style="border: 1px solid red; padding: 20px; color: #ff6b6b; text-align: center;">
-                        <h3>⚠️ Error Loading Protocols</h3>
-                        <p>${error.message}</p>
-                        <hr style="border-color: #ff6b6b; opacity: 0.3;">
-                        <p style="font-size: 0.9em; color: #ccc;">
-                            <strong>Possible Fixes:</strong><br>
-                            1. View this on <u>GitHub Pages</u> (https://[username].github.io/the-protocol-stack)<br>
-                            2. If running locally, use a local server (e.g., <code>python -m http.server</code>)<br>
-                            3. Ensure <code>data/protocols.json</code> exists in the repo.
-                        </p>
-                    </div>`;
-            }
-        }
 
         function renderProtocols(data) {
             protocolList.innerHTML = '';
@@ -188,7 +314,7 @@
 
         searchBox.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = protocols.filter(p => 
+            const filtered = PROTOCOLS_DATA.filter(p => 
                 p.title.toLowerCase().includes(query) || 
                 (p.tags && p.tags.some(t => t.toLowerCase().includes(query))) ||
                 (p.category && p.category.toLowerCase().includes(query))
@@ -196,8 +322,8 @@
             renderProtocols(filtered);
         });
 
-        // Initialize
-        fetchProtocols();
+        // Initialize directly without fetch
+        renderProtocols(PROTOCOLS_DATA);
     </script>
 </body>
 </html>

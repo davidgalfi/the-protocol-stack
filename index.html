@@ -420,6 +420,22 @@
     "exit_condition": "You are acting faster than the problem serves new inputs."
   },
   {
+    "id": "amdahl-optimization-001",
+    "title": "Amdahl's Optimization Law",
+    "category": "Engineering",
+    "severity": "SEV-3",
+    "tags": ["performance", "optimization", "math", "computer science"],
+    "description": "Don't optimize blindly. Use Amdahl's Law to find the theoretical maximum speedup.",
+    "steps": [
+      "MEASURE: Profile the code. Find the part that is slow.",
+      "IDENTIFY P: What percentage of the execution time does this part take? (e.g., p = 0.6 or 60%).",
+      "CALCULATE: Even if you make that part infinitely fast, the max speedup is 1 / (1 - p). (e.g., 1 / 0.4 = 2.5x).",
+      "DECIDE: Is it worth the engineering effort for that maximum theoretical gain?",
+      "FOCUS: If 'p' is small, STOP optimization. Focus only on high 'p' components."
+    ],
+    "exit_condition": "You have mathematical proof that optimization is worth the effort (or not)."
+  },
+  {
     "id": "galls-law-design-001",
     "title": "Gall's Law System Design",
     "category": "System Design",
@@ -438,22 +454,6 @@
   },
 
   // --- NEW HARD SCIENCE ---
-  {
-    "id": "littles-law-queue-001",
-    "title": "Little's Law Throughput",
-    "category": "Productivity",
-    "severity": "SEV-2",
-    "tags": ["productivity", "queue", "math", "work", "management"],
-    "description": "Queueing Theory (L = λW). To reduce overload (L), you MUST reduce intake (λ) or solve faster (W).",
-    "steps": [
-      "DIAGNOSE: You are overloaded. (High 'L').",
-      "OPTION A (Reduce λ): Reject new tasks immediately. Say 'No' to meetings. Close tickets as 'Won't Do'.",
-      "OPTION B (Reduce W): Lower the quality standard. Ship the 'good enough' version. Automate.",
-      "REALITY CHECK: Working longer hours does NOT solve the equation (it just increases W eventually via burnout).",
-      "ACTION: Pick one task to KILL completely right now."
-    ],
-    "exit_condition": "You have mathematically balanced your system's throughput."
-  },
   {
     "id": "simulated-annealing-001",
     "title": "Simulated Annealing",
@@ -487,20 +487,21 @@
     "exit_condition": "You have adjusted your confidence levels to match the current reality."
   },
   {
-    "id": "shannon-entropy-001",
-    "title": "Shannon Communication",
+    "id": "shannon-information-theory-001",
+    "title": "Shannon Information Protocol",
     "category": "Communication",
-    "severity": "SEV-3",
-    "tags": ["communication", "information", "theory", "writing", "clarity"],
-    "description": "Information Theory. The goal is to maximize signal and minimize noise for the receiver.",
+    "severity": "SEV-2",
+    "tags": ["entropy", "communication", "noise", "redundancy", "signal"],
+    "description": "Based on C. Shannon's Mathematical Theory of Communication. Maximize signal, minimize noise.",
     "steps": [
-      "MODEL THE RECEIVER: What does the other person ALREADY know? (This is the shared dictionary).",
-      "COMPRESS: Remove everything they already know. That is redundant 'noise'.",
-      "MAXIMIZE ENTROPY: Every sentence must provide NEW information (Surprise).",
-      "ERROR CORRECTION: Add redundancy only for critical parts (Checksums/Summaries).",
-      "CHECK: If you remove this word, does the meaning change? If no, delete it."
+      "DEFINE SOURCE: What is the exact 'bit' of information I need to transmit?",
+      "ESTIMATE NOISE: Who is the receiver? (Tired professor? Busy boss?). High noise requires high redundancy.",
+      "ENCODE: Compress the message. Remove every word that doesn't reduce uncertainty (Entropy).",
+      "ADD REDUNDANCY: Add error-correction codes (summaries, diagrams) ONLY if the channel is noisy.",
+      "TRANSMIT: Send the message.",
+      "FEEDBACK: Did the receiver decode the same 'bit'? If not, the channel capacity was exceeded."
     ],
-    "exit_condition": "The message conveys the maximum amount of meaning in the minimum number of bits."
+    "exit_condition": "The message received is identical to the message sent, with minimal bits used."
   }
 ];
 

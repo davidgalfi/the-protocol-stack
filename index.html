@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Protocol Stack</title>
     <style>
         :root {
@@ -12,37 +12,59 @@
             --accent-color: #00ff41;
             --secondary-text: #a0a0a0;
             --border-color: #333;
+            --touch-target: 48px; /* Minimum touch target size */
         }
         body {
             font-family: 'Courier New', Courier, monospace;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 15px; /* Slightly reduced padding for mobile */
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
+            padding-bottom: 50px;
         }
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             border-bottom: 2px solid var(--accent-color);
             padding-bottom: 20px;
         }
-        h1 { margin: 0; color: var(--accent-color); }
-        .subtitle { color: var(--secondary-text); font-size: 0.9em; }
+        h1 { 
+            margin: 0; 
+            color: var(--accent-color); 
+            font-size: 1.8rem; /* Responsive font size */
+        }
+        .subtitle { 
+            color: var(--secondary-text); 
+            font-size: 0.8rem; 
+            margin-top: 5px;
+        }
         
+        /* Sticky Search Bar */
+        .search-container {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background-color: var(--bg-color);
+            padding-bottom: 10px;
+        }
+
         #search-box {
             width: 100%;
             padding: 15px;
-            font-size: 16px;
+            font-size: 16px; /* Prevents iOS zoom */
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            margin-bottom: 30px;
             font-family: inherit;
+            box-sizing: border-box; /* Ensures padding is included in width */
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         #search-box:focus {
             outline: none;
@@ -52,81 +74,107 @@
         .protocol-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border-left: 4px solid var(--accent-color);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s;
+            border-radius: 4px;
+            overflow: hidden; /* Contains child margins */
         }
-        .protocol-card:hover {
-            border-left-width: 8px;
+        
+        /* Mobile Active State instead of Hover */
+        .protocol-card:active {
             background: #252525;
         }
+
         .protocol-header {
-            padding: 20px;
+            padding: 15px; /* Large touch area */
             display: flex;
             justify-content: space-between;
             align-items: center;
+            min-height: var(--touch-target);
         }
         .protocol-title {
-            font-size: 1.2em;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--accent-color);
+            flex: 1; /* Takes available space */
+            margin-right: 10px;
         }
         .protocol-meta {
-            font-size: 0.8em;
+            font-size: 0.75rem;
             color: var(--secondary-text);
+            white-space: nowrap;
         }
         
-        /* Hidden content by default */
         .protocol-body {
             display: none;
-            padding: 0 20px 20px 20px;
+            padding: 0 15px 15px 15px;
             border-top: 1px solid var(--border-color);
         }
-        /* When expanded, show content */
         .protocol-card.expanded .protocol-body {
             display: block;
         }
         .protocol-card.expanded {
-            margin-bottom: 20px; /* More space when open */
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
         }
 
         .protocol-desc {
             margin: 15px 0;
             font-style: italic;
+            font-size: 0.95rem;
+            color: #ccc;
         }
         .step-list {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
         .step-list li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
+            align-items: flex-start;
         }
         .step-list li::before {
             content: ">";
             color: var(--accent-color);
-            margin-right: 10px;
+            margin-right: 12px;
+            flex-shrink: 0; /* Prevents arrow from shrinking */
         }
         .exit-condition {
-            margin-top: 15px;
-            padding-top: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 1px dashed var(--border-color);
-            font-size: 0.9em;
+            font-size: 0.85rem;
             color: var(--secondary-text);
+            font-weight: bold;
         }
         .tag {
             display: inline-block;
             background: #333;
-            padding: 2px 6px;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.7em;
-            margin-right: 5px;
+            font-size: 0.7rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
         }
         .chevron {
             color: var(--accent-color);
             margin-left: 10px;
             font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .protocol-card.expanded .chevron {
+            transform: rotate(180deg);
+        }
+        
+        /* Mobile specific adjustments */
+        @media (max-width: 600px) {
+            .container { padding: 10px; }
+            .protocol-header { padding: 12px; }
+            .protocol-title { font-size: 1rem; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -137,7 +185,9 @@
             <p class="subtitle">Cognitive Checklists for Engineering & Learning</p>
         </header>
 
-        <input type="text" id="search-box" placeholder="SEARCH PROTOCOLS (e.g., segfault, math, anxiety)...">
+        <div class="search-container">
+            <input type="text" id="search-box" placeholder="SEARCH PROTOCOLS...">
+        </div>
 
         <div id="protocol-list">
             <p style="text-align: center; color: #666;">Loading protocols...</p>
@@ -145,8 +195,8 @@
     </div>
 
     <script>
-        // EMBEDDED PROTOCOLS DATA
         const PROTOCOLS_DATA = [
+  // --- BASIC ---
   {
     "id": "segfault-001",
     "title": "Segfault Protocol",
@@ -165,25 +215,6 @@
       "If the crash is intermittent, check for race conditions or uninitialized variables."
     ],
     "exit_condition": "The crash is identified and a fix is verified in the isolated environment."
-  },
-  {
-    "id": "math-panic-001",
-    "title": "Math Comprehension Protocol",
-    "category": "Learning",
-    "severity": "SEV-3",
-    "tags": ["math", "learning", "anxiety", "calculus", "theory"],
-    "description": "For when a mathematical concept or equation makes no sense and you feel stupid.",
-    "steps": [
-      "STOP reading. Close eyes for 10 seconds. Reset panic.",
-      "Write down the definition of every single variable and symbol in the equation.",
-      "Check the units/dimensions of each term. Do they match?",
-      "Substitute trivial numbers (0, 1, -1, infinity) to see behavior.",
-      "Draw the function or concept visually (graph, diagram).",
-      "Find a concrete example or application of this concept (Why do we need this?).",
-      "Explain the concept out loud to a rubber duck/imaginary novice.",
-      "If still stuck, trace back one level of abstraction (e.g., if derivative is unclear, review slope)."
-    ],
-    "exit_condition": "You can explain the equation's meaning in plain language without looking at notes."
   },
   {
     "id": "deploy-fear-001",
@@ -222,24 +253,8 @@
     ],
     "exit_condition": "You have engaged with the task for at least 5 minutes."
   },
-  {
-    "id": "learning-reinforcement-001",
-    "title": "Skeleton Reinforcement Protocol",
-    "category": "Learning",
-    "severity": "SEV-3",
-    "tags": ["memory", "review", "studying", "forgetting"],
-    "description": "For filling the gaps in your knowledge skeleton.",
-    "steps": [
-      "Identify the specific 'gap' or concept you forgot.",
-      "Do NOT re-read the whole textbook chapter.",
-      "Search for the specific definition or code snippet.",
-      "Write it down physically (pen and paper) - this boosts retention.",
-      "Create a 'mini-project' or code snippet that uses ONLY this concept.",
-      "Add this concept to Anki or a spaced repetition system immediately.",
-      "Connect it to something you already know well (metaphor)."
-    ],
-    "exit_condition": "You have used the concept in a new context."
-  },
+
+  // --- ACADEMIC ---
   {
     "id": "polya-problem-solving-001",
     "title": "Polya's Problem Solving Protocol",
@@ -299,6 +314,8 @@
     ],
     "exit_condition": "You can explain the concept simply without looking at any notes."
   },
+
+  // --- SCIENTIFIC / SYSTEM ---
   {
     "id": "cognitive-bias-linter-001",
     "title": "Cognitive Bias Linter",
@@ -403,22 +420,6 @@
     "exit_condition": "You are acting faster than the problem serves new inputs."
   },
   {
-    "id": "amdahl-optimization-001",
-    "title": "Amdahl's Optimization Law",
-    "category": "Engineering",
-    "severity": "SEV-3",
-    "tags": ["performance", "optimization", "math", "computer science"],
-    "description": "Don't optimize blindly. Use Amdahl's Law to find the theoretical maximum speedup.",
-    "steps": [
-      "MEASURE: Profile the code. Find the part that is slow.",
-      "IDENTIFY P: What percentage of the execution time does this part take? (e.g., p = 0.6 or 60%).",
-      "CALCULATE: Even if you make that part infinitely fast, the max speedup is 1 / (1 - p). (e.g., 1 / 0.4 = 2.5x).",
-      "DECIDE: Is it worth the engineering effort for that maximum theoretical gain?",
-      "FOCUS: If 'p' is small, STOP optimization. Focus only on high 'p' components."
-    ],
-    "exit_condition": "You have mathematical proof that optimization is worth the effort (or not)."
-  },
-  {
     "id": "galls-law-design-001",
     "title": "Gall's Law System Design",
     "category": "System Design",
@@ -434,6 +435,72 @@
       "REPEAT: Evolve the system incrementally. Complexity is grown, not built."
     ],
     "exit_condition": "You have a working complex system evolved from a working simple one."
+  },
+
+  // --- NEW HARD SCIENCE ---
+  {
+    "id": "littles-law-queue-001",
+    "title": "Little's Law Throughput",
+    "category": "Productivity",
+    "severity": "SEV-2",
+    "tags": ["productivity", "queue", "math", "work", "management"],
+    "description": "Queueing Theory (L = λW). To reduce overload (L), you MUST reduce intake (λ) or solve faster (W).",
+    "steps": [
+      "DIAGNOSE: You are overloaded. (High 'L').",
+      "OPTION A (Reduce λ): Reject new tasks immediately. Say 'No' to meetings. Close tickets as 'Won't Do'.",
+      "OPTION B (Reduce W): Lower the quality standard. Ship the 'good enough' version. Automate.",
+      "REALITY CHECK: Working longer hours does NOT solve the equation (it just increases W eventually via burnout).",
+      "ACTION: Pick one task to KILL completely right now."
+    ],
+    "exit_condition": "You have mathematically balanced your system's throughput."
+  },
+  {
+    "id": "simulated-annealing-001",
+    "title": "Simulated Annealing",
+    "category": "Problem Solving",
+    "severity": "SEV-2",
+    "tags": ["algorithm", "physics", "stuck", "optimization", "random"],
+    "description": "Physics-based algorithm for finding global optimums. When stuck (local max), add noise.",
+    "steps": [
+      "CONDITION: You are stuck in a 'local optimum' (making small changes but not improving).",
+      "TEMPERATURE UP: Introduce high randomness/noise. Try a radically stupid idea.",
+      "EXPLORE: Rewrite the function in a new language? Delete 50% of the code? Draw the problem upside down?",
+      "COOL DOWN: If a random move looks promising, start refining (hill climbing) from there.",
+      "ACCEPTANCE: Accept a worse state temporarily if it allows escaping the local trap."
+    ],
+    "exit_condition": "You have escaped the local mental trap and found a new path."
+  },
+  {
+    "id": "bayesian-update-001",
+    "title": "Bayesian Belief Update",
+    "category": "Logic",
+    "severity": "SEV-3",
+    "tags": ["statistics", "bayes", "logic", "beliefs", "evidence"],
+    "description": "Rationality is not about being right, but about updating your probability based on new evidence.",
+    "steps": [
+      "PRIOR: What did I believe before? (e.g., 'This bug is caused by the database' - 80% confidence).",
+      "EVIDENCE: What new data did I just see? (e.g., 'The database logs are clean').",
+      "UPDATE: Do not say 'I was wrong'. Say 'My confidence in the DB hypothesis dropped to 10%'.",
+      "SEARCH: What hypothesis explains the evidence best?",
+      "RULE: Absence of evidence IS evidence of absence (if you looked where it should be)."
+    ],
+    "exit_condition": "You have adjusted your confidence levels to match the current reality."
+  },
+  {
+    "id": "shannon-entropy-001",
+    "title": "Shannon Communication",
+    "category": "Communication",
+    "severity": "SEV-3",
+    "tags": ["communication", "information", "theory", "writing", "clarity"],
+    "description": "Information Theory. The goal is to maximize signal and minimize noise for the receiver.",
+    "steps": [
+      "MODEL THE RECEIVER: What does the other person ALREADY know? (This is the shared dictionary).",
+      "COMPRESS: Remove everything they already know. That is redundant 'noise'.",
+      "MAXIMIZE ENTROPY: Every sentence must provide NEW information (Surprise).",
+      "ERROR CORRECTION: Add redundancy only for critical parts (Checksums/Summaries).",
+      "CHECK: If you remove this word, does the meaning change? If no, delete it."
+    ],
+    "exit_condition": "The message conveys the maximum amount of meaning in the minimum number of bits."
   }
 ];
 
@@ -457,11 +524,11 @@
 
                 card.innerHTML = `
                     <div class="protocol-header" onclick="this.parentElement.classList.toggle('expanded')">
-                        <div>
-                            <span class="protocol-title">${p.title.toUpperCase()}</span>
+                        <div class="protocol-title">${p.title.toUpperCase()}</div>
+                        <div style="display: flex; align-items: center;">
+                            <span class="protocol-meta">[${p.severity}] ${p.category}</span>
                             <span class="chevron">▼</span>
                         </div>
-                        <span class="protocol-meta">[${p.severity}] ${p.category}</span>
                     </div>
                     <div class="protocol-body">
                         <div class="protocol-desc">${p.description}</div>
